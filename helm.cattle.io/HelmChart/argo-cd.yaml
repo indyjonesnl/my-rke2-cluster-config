@@ -1,0 +1,29 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+  name: argo-cd
+  namespace: kube-system
+spec:
+  chart: argo-cd
+  createNamespace: true
+  repo: https://argoproj.github.io/argo-helm
+  targetNamespace: argo-cd
+  valuesContent: |-
+    redis-ha:
+      enabled: true
+
+    controller:
+      replicas: 1
+
+    server:
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+
+    repoServer:
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+
+    applicationSet:
+      replicas: 2
+  version: 5.46.4
