@@ -1,0 +1,45 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: rocketchat
+  namespace: kube-system
+spec:
+  chart: rocketchat
+  createNamespace: true
+  repo: https://rocketchat.github.io/helm-charts
+  targetNamespace: rocketchat
+  valuesContent: |-
+    ingress:
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+      ingressClassName: nginx
+      enabled: true
+      tls:
+        - hosts:
+            - rocket.domain.com
+          secretName: rocketchat-tls
+    persistence:
+      enabled: true
+      storageClass: longhorn
+    host: 'rocket.domain.com'
+    serviceMonitor:
+      enabled: true
+    prometheusScraping:
+      enabled: true
+    mongodb:
+      backup:
+        cronjob:
+          storage:
+            storageClass: longhorn
+      hidden:
+        persistence:
+          storageClass: longhorn
+      persistence:
+        storageClass: longhorn
+      global:
+        storageClass: longhorn
+      auth:
+        passwords:
+          - abc # $(echo -n $(openssl rand -base64 32))
+        rootPassword: abc # $(echo -n $(openssl rand -base64 32))
+  version: 6.4.1
