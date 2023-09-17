@@ -1,0 +1,12 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: prometheus
+  namespace: kube-system
+spec:
+  chart: prometheus
+  createNamespace: true
+  repo: https://prometheus-community.github.io/helm-charts
+  targetNamespace: monitoring
+  version: 51.0.2
+
