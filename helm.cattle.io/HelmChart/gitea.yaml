@@ -1,0 +1,55 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: gitea
+  namespace: kube-system
+spec:
+  chart: gitea
+  createNamespace: true
+  repo: https://dl.gitea.com/charts
+  targetNamespace: gitea
+  valuesContent: |-
+    redis-cluster:
+      enabled: false
+    postgresql:
+      enabled: false
+    postgresql-ha:
+      enabled: false
+    ingress:
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+      className: nginx
+      enabled: true
+      hosts:
+        - host: gitea.domain.com
+          paths:
+            - path: "/"
+              pathType: Prefix
+      tls:
+        - hosts:
+            - gitea.domain.com
+          secretName: gitea-tls
+    persistence:
+      enabled: true
+      storageClass: longhorn    
+    gitea:
+      config:
+        actions:
+          ENABLED: true
+        database:
+          DB_TYPE: sqlite3
+        session:
+          PROVIDER: memory
+        cache:
+          ADAPTER: memory
+        queue:
+          TYPE: level
+      admin:
+        username: admin
+        password: superamazingpassword
+        email: "admin@domain.com"
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+  version: 9.4.0
