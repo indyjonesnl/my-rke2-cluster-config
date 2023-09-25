@@ -1,0 +1,33 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: newrelic
+  namespace: kube-system
+spec:
+  chart: nri-bundle
+  createNamespace: true
+  repo: https://helm-charts.newrelic.com
+  targetNamespace: newrelic
+  valuesContent: |-
+    global:
+      licenseKey: REDACTED
+      lowDataMode: true
+      cluster: rke2
+    newrelic-infrastructure.privileged: true
+    kube-state-metrics:
+      enabled: true
+      image.tag: 2.7.0
+    kubeEvents:
+      enabled: true
+    newrelic-prometheus-agent:
+      enabled: true
+      lowDataMode: true
+      config.kubernetes.integrations_filter.enabled: false
+    newrelic-pixie:
+      enabled: true
+      apiKey: REDACTED
+    pixie-chart:
+      enabled: true
+      deployKey: REDACTED
+      clusterName: rke2
+  version: 5.0.28
