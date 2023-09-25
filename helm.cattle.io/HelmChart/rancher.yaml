@@ -9,10 +9,16 @@ spec:
   repo: https://releases.rancher.com/server-charts/stable
   targetNamespace: cattle-system
   valuesContent: |-
+    bootstrapPassword: password
+    certmanager.version: 1.12.4
     hostname: domain.org
     ingress:
+      tls:
+        source: letsEncrypt
+        secretName: rancher-tls
       ingressClassName: nginx
     letsEncrypt:
+      email: "youremail@domain.org"
       ingress:
         class: nginx
   version: 2.7.6
