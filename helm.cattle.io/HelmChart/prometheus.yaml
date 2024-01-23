@@ -8,5 +8,5 @@ spec:
   createNamespace: true
   repo: https://prometheus-community.github.io/helm-charts
   targetNamespace: monitoring
-  version: 51.0.2
+  version: 25.10.0
 
