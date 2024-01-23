@@ -1,0 +1,13 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: grafana
+  namespace: kube-system
+spec:
+  chart: grafana
+  createNamespace: true
+  repo: https://grafana.github.io/helm-charts
+  set:
+    persistence.enabled: 'true'
+  targetNamespace: monitoring
+  version: 7.2.4
