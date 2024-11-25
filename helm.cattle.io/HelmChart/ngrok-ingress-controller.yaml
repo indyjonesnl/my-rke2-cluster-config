@@ -1,9 +1,8 @@
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
-  annotations:
-    name: ngrok-ingress-controller
-    namespace: kube-system
+  name: ngrok-ingress-controller
+  namespace: kube-system
 spec:
   chart: kubernetes-ingress-controller
   createNamespace: true
